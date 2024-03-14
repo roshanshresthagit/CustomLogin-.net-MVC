@@ -11,8 +11,9 @@ namespace CustomLogin.Controllers
         private readonly UserManager<AppUser> userManager;
 
 
-        public AccountController(SignInManager<AppUser> signInManager)
+        public AccountController(UserManager<AppUser> userManager,SignInManager<AppUser> signInManager)
         {
+            this.userManager = userManager;
             this.signInManager = signInManager;
         }
 
