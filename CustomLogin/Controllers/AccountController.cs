@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using CustomLogin.Models;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace CustomLogin.Controllers
 {
@@ -16,8 +17,6 @@ namespace CustomLogin.Controllers
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
-
-
         public IActionResult Login()
         {
             return View();
@@ -31,7 +30,8 @@ namespace CustomLogin.Controllers
                 var result= await signInManager.PasswordSignInAsync(model.Username!, model.Password!, model.RememberMe,false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    Console.WriteLine("user logged in");
+                    return RedirectToAction("Index","Home");
                 }
                 ModelState.AddModelError("", "Invalid Login attemp");
                 return View(model);
@@ -47,7 +47,7 @@ namespace CustomLogin.Controllers
         {
             if (ModelState.IsValid)
             {
-                AppUser user = new AppUser ()
+                AppUser user = new AppUser()
                 {
                     Name = model.Name,
                     UserName = model.Email,
@@ -73,5 +73,7 @@ namespace CustomLogin.Controllers
             await signInManager.SignOutAsync();           
             return RedirectToAction("Index","Home");
         }
+        
+
     }
 }
